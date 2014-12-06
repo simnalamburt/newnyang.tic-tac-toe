@@ -9,9 +9,6 @@ final ArrayList<Position> positionLeft = new ArrayList<Position>();
 
 int player = random(1) > 0.5f ? 1 : 2;
 
-int winner = 0;
-boolean gameover;
-
 void setup()  {
   size(300,300);
   smooth();
@@ -64,6 +61,8 @@ void mousePressed()  {
     }
   }
 
+  isGameOver();
+
   int lefts = positionLeft.size();
   if (lefts > 0) {
     int selectedIndex = (int) random(positionLeft.size());
@@ -72,32 +71,32 @@ void mousePressed()  {
     board[selected.row][selected.col].state = 3 - player;
   }
 
-  //checkGameOver();
+  isGameOver();
 }
 
 
-void checkGameOver() {
-
-  // three across : \
-  if(board[0][0].state == 1 && board[1][1].state == 1 && board[2][2].state == 1)  gameover = true; winner = 1; gameover();
-  if(board[0][0].state == 2 && board[1][1].state == 2 && board[2][2].state == 2)  gameover = true; winner = 2; gameover();
-
-  // three across : /
-  if(board[0][2].state == 1 && board[1][1].state == 1 && board[2][0].state == 1) gameover = true; winner = 1; gameover();
-  if(board[0][2].state == 2 && board[1][1].state == 2 && board[2][0].state == 2) gameover = true; winner = 2; gameover();
-
-
-  for(int i = 0; i < 3; ++ i) {
-    for(int j = 0; j < 3; ++j) {
-      // three in a row
-      if(board[i][0].state == 1 && board[i][1].state == 1 && board[i][1].state == 1) gameover = true; winner = 1; gameover();
-      if(board[i][0].state == 2 && board[i][1].state == 2 && board[i][1].state == 2) gameover = true; winner = 2; gameover();
-
-      // three in a column
-      if(board[0][j].state == 1 && board[0][j].state == 1 && board[0][j].state == 1) gameover = true; winner = 1; gameover();
-      if(board[0][j].state == 2 && board[0][j].state == 2 && board[0][j].state == 2) gameover = true; winner = 2; gameover();
+//
+// Check if the game is over
+//
+// Return player's number when the player has won
+// Otherwise, 0
+//
+int isGameOver() {
+  for (int player = 1; i <= 2; ++i) {
+    // rows & cols
+    for(int i = 0; i < rows; ++ i) {
+      for(int j = 0; j < cols; ++j) {
+        if (board[i][0].state == player && board[i][1].state == player && board[i][1].state == player) return player;
+        if (board[0][j].state == player && board[0][j].state == player && board[0][j].state == player) return player;
+      }
     }
+    // diagonal
+    if (board[0][0].state == player && board[1][1].state == player && board[2][2].state == player) return player;
+    if (board[0][2].state == player && board[1][1].state == player && board[2][0].state == player) return player;
   }
+
+  // Passed all tests, the game is not over yet
+  return 0;
 }
 
 void gameover(){
