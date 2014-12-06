@@ -26,15 +26,16 @@ public class Cell {
 
     float b = 8.0f;
 
-    if (state == 0) {
-      // nothing
-    } else if (state == 1) {
+    switch(state) {
+    case 1:
       // Draw an O
       ellipse(x+w/2,y+h/2,w-b,h-b);
-    } else if (state == 2) {
+      break;
+    case 2:
       // Draw an X
       line(x+b,y+b,x+w-b,y+h-b);
       line(x+w-b,y+b,x+b,y+h-b);
+      break;
     }
   }
 }

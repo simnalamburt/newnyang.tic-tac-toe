@@ -8,12 +8,9 @@ final Cell[][] board = new Cell[rows][cols];
 final ArrayList<Position> positionLeft = new ArrayList<Position>();
 
 int player = random(1) > 0.5f ? 1 : 2;
-int cellsleft;
-int r_rows, r_cols;
 
 int winner = 0;
 boolean gameover;
-boolean computer = true;
 
 void setup()  {
   size(300,300);
@@ -31,10 +28,6 @@ void setup()  {
 void draw()  {
   background(255);
 
-  // generate random numbers
-  r_rows = (int) random(rows);
-  r_cols = (int) random(cols);
-
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       board[i][j].display();
@@ -50,8 +43,6 @@ Position tryClick() {
         boolean success = board[i][j].click(mouseX, mouseY, player);
         //return clicked cell's position
         if (success) return new Position(i, j);
-      } else {
-        computer = false;
       }
     }
   }
@@ -73,53 +64,17 @@ void mousePressed()  {
     }
   }
 
-  if(computer && board[r_rows][r_cols].state == 0) board[r_rows][r_cols].state = 3-player;
+  int lefts = positionLeft.size();
+  if (lefts > 0) {
+    int selectedIndex = (int) random(positionLeft.size());
+    Position selected = positionLeft.get(selectedIndex);
+    positionLeft.remove(selectedIndex);
+    board[selected.row][selected.col].state = 3 - player;
+  }
 
-  //println("random : " + r_cols + ", " + r_rows);
-  displayPosition();
-  //displayState();
   //checkGameOver();
 }
 
-
-void displayPosition () {
-  for (int i = 0; i < positionLeft.size(); ++i) {
-    println("Cell - " + positionLeft.get(i).row + ", " + positionLeft.get(i).col);
-  }
-}
-
-void displayState() {
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      if(board[i][j].state != 0) {
-        //println("(" + j + ", " + i + ") state : " + board[i][j].state);
-      }
-    }
-  }
-}
-
-
-void availablecells() {
-  cellsleft = rows*cols;
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      if (board[i][j].state != 0) cellsleft --;
-    }
-  }
-
-  if(cellsleft > 1) {
-    println(cellsleft + " cells available");
-  }else if(cellsleft == 1) {
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++) {
-        if(board[i][j].state == 0) board[i][j].state = 1;
-      }
-    }
-  }else {
-    println("game over! nobody wins.");
-
-  }
-}
 
 void checkGameOver() {
 
@@ -146,22 +101,18 @@ void checkGameOver() {
 }
 
 void gameover(){
-    fill(0);
-    textSize(20);
-    if (winner == 0){ text("Game over! Nobody wins.", width/2, height/2);}
-    if (winner == 1){ text("Winner: Player 1", width/2, height/2);}
-    if (winner == 2){ text("Winner: Player 2", width/2, height/2);}
-}
+  fill(0);
+  textSize(20);
 
-void startGame() {
-
-  winner = 0;
-  cellsleft = rows*cols;
-  player = int(random(1,2));
-
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      board[i][j].state = 0;
-    }
+  switch(winner) {
+  case 0:
+    text("Game over! Nobody won.", width/2, height/2);
+    break;
+  case 1:
+    text("Winner: Player 1", width/2, height/2);
+    break;
+  case 2:
+    text("Winner: Player 2", width/2, height/2);
+    break;
   }
 }
