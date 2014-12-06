@@ -38,6 +38,9 @@ void draw()  {
   fill(0);
   if (gameStatus == GameStatus.Done) {
     switch(winner) {
+    case 0 :
+      text("No Winner! Game over", width/2, height/2);
+      break;
     case 1:
       text("Winner: Player 1", width/2, height/2);
       break;
@@ -97,7 +100,7 @@ Position tryClick() {
 //
 void check() {
   winner = winner();
-  if (winner > 0) {
+  if (winner > 0 || positionLeft.size() == 0) {
     gameStatus = GameStatus.Done;
   }
 }
