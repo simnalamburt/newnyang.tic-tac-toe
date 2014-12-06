@@ -83,6 +83,8 @@ void check() {
 
   fill(0);
   textSize(20);
+  textAlign(CENTER);
+
 
   switch(winner) {
   /*
