@@ -1,14 +1,13 @@
+//
 // Tic-Tac-Toe Game
+//
+final int rows = 3;
+final int cols = 3;
 
-Cell[][] board;
-ArrayList<Position> positionLeft;
+final Cell[][] board = new Cell[rows][cols];
+final ArrayList<Position> positionLeft = new ArrayList<Position>();
 
-int rows = 3;
-int cols = 3;
-int w;
-int h;
-
-int player;
+int player = random(1) > 0.5f ? 1 : 2;
 int cellsleft;
 int r_rows, r_cols;
 
@@ -20,18 +19,9 @@ void setup()  {
   size(300,300);
   smooth();
 
-  w = width/cols;
-  h = height/rows;
-
-  player = int(random(1,3));
-  println(player);
-
-  positionLeft = new ArrayList<Position>();
-
-  board = new Cell[rows][cols];
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
-      board[i][j] = new Cell(j*w, i*h, w, h);
+      board[i][j] = new Cell(width/cols*i, height/rows*j, width/cols, height/rows);
       positionLeft.add(new Position(i, j));
     }
   }
@@ -41,7 +31,7 @@ void setup()  {
 void draw()  {
   background(255);
 
-  //generate random numbers
+  // generate random numbers
   r_rows = (int) random(rows);
   r_cols = (int) random(cols);
 
@@ -71,9 +61,9 @@ Position tryClick() {
 
 
 void mousePressed()  {
-
   //save clicked cell to result
   Position result = tryClick();
+  if (result == null) { return; }
   for (int i = 0; i < positionLeft.size(); ++i) {
     //get every position in positionLeft
     Position current = positionLeft.get(i);
@@ -94,7 +84,7 @@ void mousePressed()  {
 
 void displayPosition () {
   for (int i = 0; i < positionLeft.size(); ++i) {
-    println(positionLeft.get(i).row, positionLeft.get(i).col);
+    println("Cell - " + positionLeft.get(i).row + ", " + positionLeft.get(i).col);
   }
 }
 

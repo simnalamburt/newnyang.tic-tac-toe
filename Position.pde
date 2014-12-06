@@ -1,8 +1,8 @@
 public class Position {
   int row, col;
 
-  Position(int row, int Col) {
+  Position(int row, int col) {
     this.row = row;
-    this.row = col;
+    this.col = col;
   }
 }
