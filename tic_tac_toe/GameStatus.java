@@ -1,0 +1,3 @@
+enum GameStatus {
+  Playing, Done
+};

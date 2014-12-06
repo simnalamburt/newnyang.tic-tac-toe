@@ -9,9 +9,14 @@ final ArrayList<Position> positionLeft = new ArrayList<Position>();
 
 int player = random(1) > 0.5f ? 1 : 2;
 
+GameStatus gameStatus = GameStatus.Playing;
+int winner = 0;
+
 void setup()  {
   size(300,300);
   smooth();
+  textSize(20);
+  textAlign(CENTER);
 
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -24,16 +29,28 @@ void setup()  {
 
 void draw()  {
   background(255);
-
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       board[i][j].display();
+    }
+  }
+
+  fill(0);
+  if (gameStatus == GameStatus.Done) {
+    switch(winner) {
+    case 1:
+      text("Winner: Player 1", width/2, height/2);
+      break;
+    case 2:
+      text("Winner: Player 2", width/2, height/2);
+      break;
     }
   }
 }
 
 
 void mousePressed()  {
+  if (gameStatus != GameStatus.Playing) { return; }
   //save clicked cell to result
   Position result = tryClick();
   if (result == null) { return; }
@@ -48,6 +65,7 @@ void mousePressed()  {
 
   check();
 
+  if (gameStatus != GameStatus.Playing) { return; }
   int lefts = positionLeft.size();
   if (lefts > 0) {
     int selectedIndex = (int) random(positionLeft.size());
@@ -78,29 +96,10 @@ Position tryClick() {
 // Check if the game is ended
 //
 void check() {
-  int winner = winner();
-  if (winner == 0) { return; }
-
-  fill(0);
-  textSize(20);
-  textAlign(CENTER);
-
-
-  switch(winner) {
-  /*
-  case 0:
-    text("Game over! Nobody won.", width/2, height/2);
-    break;
-    */
-  case 1:
-    text("Winner: Player 1", width/2, height/2);
-    break;
-  case 2:
-    text("Winner: Player 2", width/2, height/2);
-    break;
+  winner = winner();
+  if (winner > 0) {
+    gameStatus = GameStatus.Done;
   }
-
-  noLoop();
 }
 
 //
