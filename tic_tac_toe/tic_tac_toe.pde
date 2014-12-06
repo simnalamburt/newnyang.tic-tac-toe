@@ -15,6 +15,7 @@ int winner = 0;
 void setup()  {
   size(300,300);
   smooth();
+  frameRate(30);
   textSize(20);
   textAlign(CENTER);
 
